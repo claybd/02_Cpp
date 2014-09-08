@@ -22,6 +22,20 @@
 
 //TODO: Declare and implement "prime" function here
 
+bool prime(int n)
+{
+    int count = n - 1;
+    
+    while (count > 0)
+    {
+       if (n % count == 0)
+           return true;
+        count--;
+    }
+    
+    return false;
+    
+}
 
 //This is a basic tester for the "prime" function
 void testPrime(){
