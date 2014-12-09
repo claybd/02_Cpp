@@ -20,29 +20,33 @@
 //Hints: This exercise uses for loops, if statements,
 // and the % operator.
 
-//TODO: Declare and implement "prime" function here
-
 bool prime(int n)
 {
+    if (n < 2)
+        return false;
+    
     int count = n - 1;
     
     while (count > 0)
     {
-       if (n % count == 0)
-           return true;
+       if (n % count == 0 && n != 2 && count != 1)
+           return false;
         count--;
     }
     
-    return false;
+    return true;
     
 }
 
 //This is a basic tester for the "prime" function
-void testPrime(){
+void testPrime()
+{
   int nums[] = {-5, -1, 0, 1, 2 ,3, 4, 5, 6 };
   bool results[] = {false, false, false, false, true, true, false, true, false};
-  for(int i=0; i<9;i++){
-    if(prime(nums[i]) != results[i]){
+  for(int i=0; i<9;i++)
+  {
+    if(prime(nums[i]) != results[i])
+    {
       std::string res = prime(nums[i]) ? "true" : "false";
       std::cout << "testPrime: ERROR: On " << nums[i] << " you returned " << res.c_str() << std::endl;
       return;
@@ -68,15 +72,34 @@ void testPrime(){
 //Hints: Check out the string API documentation at http://www.cplusplus.com/reference/string/string/
 // The find functions and substr function will be easiest.
 
-//TODO: declare and implement "defix" function here
+std::string defix (std::string word)
+{
+    std::string newWord;
+    unsigned long wordSize = word.length();
+    bool dashFound = false;
+    
+    for (int i = 0; i < wordSize && dashFound == false; i++) {
+        if (word.at(i) == '-') {
+            dashFound = true;
+            newWord.append(&word.at(i + 1));
+
+            return newWord;
+        }
+    }
+    
+    return word;
+}
 
 //This is a basic tester for "defix"
-void testDefix(){
+void testDefix()
+{
   std::string inputs[] = {"re-run","pre--text","-ooh","moo","no-no-no", "foo-"};
   std::string outputs[] = {"run","-text","ooh","moo","no-no", ""};
 
-  for(int i=0;i<5;i++){
-    if(outputs[i].compare(defix(inputs[i])) != 0){
+  for(int i=0;i<5;i++)
+  {
+    if(outputs[i].compare(defix(inputs[i])) != 0)
+    {
       std::cout << "testDefix: ERROR: Expected " << outputs[i].c_str() << " but got " << defix(inputs[i]).c_str() << std::endl;
       return;
     }
@@ -101,10 +124,23 @@ void testDefix(){
 //
 //Hints: Your answer is going to be very similar to what you would do in Java
 
-//TODO: Declare and implement sumSlice here
+int sumSlice (int intArray[], int startingIndex, int length)
+{
+    if (startingIndex < 0 || length < 0)
+      return 0;
+    
+    int sum = 0;
+    for (int i = startingIndex; i < (startingIndex + length); i++)
+    {
+        sum = sum + intArray[i];
+    }
+    
+    return sum;
+}
 
 //This is a basic tester for "sumSlice"
-void testSumSlice(){
+void testSumSlice()
+{
   int arrays[5][4] = { {1, 2, 3, 4},
 		      {1, 2, 3, 4},
 		      {1, -1, 1, -1},
@@ -114,8 +150,10 @@ void testSumSlice(){
   int len[] = {1, 3, 4, 0, 3};
   int outputs[] = {2, 9, 0, 0, -1};
 
-  for(int i=0; i<5; i++){
-    if(sumSlice(arrays[i],s[i],len[i]) != outputs[i]){
+  for(int i=0; i<5; i++)
+  {
+    if(sumSlice(arrays[i],s[i],len[i]) != outputs[i])
+    {
       std::cout << "testSumSlice: ERROR: on index i=" << i << " expected " << outputs[i] << " but got " << sumSlice(arrays[i],s[i],len[i]) << std::endl;
       return;
     }
@@ -151,7 +189,51 @@ void testSumSlice(){
 // test it however you can, to try to make sure it does the right thing for
 // all possible inputs.
 
-//TODO: Declare and implement "square" function here
+void square (int n)
+{
+    if (n <= 0)
+        return;
+    
+    std::string topBottom;
+    std::string middle;
+    
+    middle.append(1, '|');
+    if (n > 2)
+        middle.append(n - 2, 'o');
+    middle.append(1, '|');
+    
+    topBottom.append(1, '+');
+    if (n > 2)
+        topBottom.append(n - 2, '-');
+    
+    if (n > 1)
+        topBottom.append(1, '+');
+        
+    
+    for (int i = 0; i < n; i++)
+    {
+        if (i == 0 || i == n - 1)
+            std::cout << topBottom << std::endl;
+        else if (n > 2)
+            std::cout << middle << std::endl;
+    }
+    
+    std::cout << ' ' << std::endl;
+}
+
+void testSquare ()
+{
+    square (1);
+    square (2);
+    square (3);
+    square (4);
+    square (5);
+    square (6);
+    square (7);
+    square (8);
+    square (9);
+    
+}
 
 //5. Create a function called listPrimes which takes an int, n, as input.
 //   It should use "new" to allocate an array of length n, and then put
@@ -164,7 +246,36 @@ void testSumSlice(){
 //
 //Hint: While loops work better than for loops for this one.
 
-//TODO: Declare and implement listPrimes here
+int* listPrimes (int n) {
+    int* primes = new int[100];
+    bool isPrime = true;
+    int top = 2;
+    int count = 0;
+    
+    while (count < n)
+    {
+        isPrime = true;
+        int check = 2;
+        while (check < top)
+        {
+            if (top%check == 0 && top != 2)
+                isPrime = false;
+            
+            check++;
+        
+        }
+        
+        if (isPrime)
+        {
+            primes[count] = top;
+            count++;
+        }
+        
+        top++;
+    }
+    
+    return primes;
+}
 
 void testListPrimes(){
   int some_primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
@@ -185,10 +296,11 @@ void testListPrimes(){
 }
 
 int main(){
-  testPrime();
-  testDefix();
-  testSumSlice();
-  testListPrimes();
+    testPrime();
+    testDefix();
+    testSumSlice();
+    testListPrimes();
+    testSquare();
 
   return 0;
 }
